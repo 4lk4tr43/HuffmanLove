@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Huffman Love</title>
+    <link rel="stylesheet" href="Basic.min.css">
+</head>
+<body>
+    <a href="Decode.html">Go to Decode</a>
+
+    <div class="text">Text to encode</div>
+    <div class="panel">
+        <label>
+                Paste the text here:
+                <textarea id="Text"></textarea>
+        </label>
+
+        <label>
+            <input id="TextFile" type="file">
+            <br>
+            <button class="fullWidth" onclick="UploadText()">Upload</button>
+        </label>
+    </div>
+    <button class="fullWidth topMargin botMargin bigLineHeight" onclick="Encode()">Encode</button>
+
+    <div class="left panel">
+        <div class="text">output bits</div>
+        <button class="fullWidth" onclick="DownloadBits()">Download</button>
+        <div id="Bits" class="topMargin"></div>
+    </div>
+    <div class="right panel">
+        <div class="text">value:frequency</div>
+        <button class="fullWidth" onclick="DownloadFrequencies()">Download</button>
+        <ul id="Frequencies"></ul>
+    </div>
+
+    <script type="text/javascript" src="Huffman.js"></script>
+    <script type="text/javascript" src="FileHelpers.js"></script>
+    <script type="text/javascript" src="Encode.js"></script>
+</body>
+</html>
