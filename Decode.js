@@ -1,7 +1,7 @@
 /// <reference path="Huffman.ts" />
 /// <reference path="FileHelpers.ts" />
 function Decode() {
-    var outText = document.getElementById("text");
+    var outText = document.getElementById("Text");
 
     outText.innerHTML = "";
 
