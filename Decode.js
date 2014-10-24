@@ -18,25 +18,38 @@ function Decode() {
     for (var i = 0; i < frequencyPairs.length; i++) {
         var s = frequencyPairs[i];
         var l = s.lastIndexOf(":");
-        var value = l == 0 ? " " : s.substring(0, l);
+        var value;
+        if (l == 0) {
+            value = " ";
+        } else {
+            value = s.substring(0, l);
+            if (l > 1) {
+                if (value == "\\n")
+                    value = "\n";
+                else if (value == "\\r")
+                    value = "\r";
+            }
+        }
         frequencyMap[value] = parseInt(s.substring(l + 1));
     }
 
     var frequenciesAscending = Huffman.GetAscendingFrequenciesArray(frequencyMap);
     var tree = Huffman.GetHuffmanTree(frequenciesAscending);
     var bitString = document.getElementById("Bits")["value"];
-    outText.innerText = Huffman.Decode(bitString, tree);
+    var data = Huffman.Decode(bitString, tree);
+    var html = data.replace(/\n/g, "<br>").replace(/\r/g, "<div></div>");
+    outText.innerHTML = html;
 }
 
 function UploadBits() {
     FileHelpers.GetAsString(document.getElementById("BitsFile"), function (e) {
-        document.getElementById("Bits")["value"] = e.srcElement.result;
+        document.getElementById("Bits")["value"] = e["target"].result;
     });
 }
 
 function UploadFrequencies() {
     FileHelpers.GetAsString(document.getElementById("FrequenciesFile"), function (e) {
-        document.getElementById("Frequencies")["value"] = e.srcElement.result;
+        document.getElementById("Frequencies")["value"] = e["target"].result;
     });
 }
 
@@ -44,6 +57,8 @@ var textFile = undefined;
 function DownloadText() {
     if (textFile != undefined)
         FileHelpers.RevokeUrlFile(textFile);
-    textFile = FileHelpers.DownloadAsStringFile("Text.txt", document.getElementById("Text").innerText);
+    var e = document.getElementById("Text");
+    var data = e.innerHTML.replace(/<br>/g, "\n").replace(/<div><\/div>/g, "\r");
+    textFile = FileHelpers.DownloadAsStringFile("Text.txt", data);
 }
 //# sourceMappingURL=Decode.js.map

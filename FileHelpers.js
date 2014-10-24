@@ -13,22 +13,27 @@ var FileHelpers = (function () {
 
     FileHelpers.DownloadAsStringFile = function (fileName, data) {
         var blob = new Blob([data], { type: "text/plain", encoding: "UTF-8" });
-        var objectUrl = window["URL"].createObjectURL(blob);
-
-        var downloadAnchor = document.createElement("a");
-        downloadAnchor.setAttribute("style", "display:none");
-        downloadAnchor.setAttribute("download", fileName);
-        downloadAnchor.setAttribute("href", objectUrl);
-
-        if (downloadAnchor.click != undefined)
-            downloadAnchor.click();
-        else {
-            var clickEvent = document.createEvent("MouseEvents");
-            clickEvent["initMouseEvent"]("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-            downloadAnchor.dispatchEvent(clickEvent);
+        if (window.navigator.msSaveOrOpenBlob != undefined) {
+            var success = window.navigator.msSaveOrOpenBlob(blob, fileName);
+            if (success == false)
+                alert("Internet Explorer failed to download file.");
+        } else {
+            var objectUrl = window["URL"].createObjectURL(blob);
+            var downloadAnchor = document.createElement("a");
+            downloadAnchor.setAttribute("style", "display:none");
+            downloadAnchor.setAttribute("download", fileName);
+            downloadAnchor.setAttribute("href", objectUrl);
+            document.body.appendChild(downloadAnchor);
+            if (downloadAnchor.click != undefined)
+                downloadAnchor.click();
+            else {
+                var clickEvent = document.createEvent("MouseEvents");
+                clickEvent["initMouseEvent"]("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+                downloadAnchor.dispatchEvent(clickEvent);
+            }
+            document.body.removeChild(downloadAnchor);
+            return objectUrl;
         }
-
-        return objectUrl;
     };
 
     FileHelpers.RevokeUrlFile = function (objectUrl) {

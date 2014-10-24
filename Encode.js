@@ -16,7 +16,12 @@ function Encode() {
     for (var i = frequenciesAscending.length - 1; i >= 0; i--) {
         var frequency = frequenciesAscending[i];
         var li = document.createElement("li");
-        li.innerHTML = frequency.char + ":" + frequency.count;
+        var value = frequency.char;
+        if (value == "\n")
+            value = "\\n";
+        else if (value == "\r")
+            value = "\\r";
+        li.innerHTML = value + ":" + frequency.count;
         frequenciesUl.appendChild(li);
     }
 
@@ -26,7 +31,7 @@ function Encode() {
 
 function UploadText() {
     FileHelpers.GetAsString(document.getElementById("TextFile"), function (e) {
-        document.getElementById("Text")["value"] = e.srcElement.result;
+        document.getElementById("Text")["value"] = e["target"].result;
     });
 }
 
@@ -34,13 +39,22 @@ var bitsFile = undefined;
 function DownloadBits() {
     if (bitsFile != undefined)
         FileHelpers.RevokeUrlFile(bitsFile);
-    bitsFile = FileHelpers.DownloadAsStringFile("Bits.txt", document.getElementById("Bits").innerText);
+    var e = document.getElementById("Bits");
+    bitsFile = FileHelpers.DownloadAsStringFile("Bits.txt", e.innerHTML);
 }
 
 var frequenciesFile = undefined;
 function DownloadFrequencies() {
     if (frequenciesFile != undefined)
         FileHelpers.RevokeUrlFile(frequenciesFile);
-    frequenciesFile = FileHelpers.DownloadAsStringFile("Frequencies.txt", document.getElementById("Frequencies").innerText);
+    var e = document.getElementById("Frequencies");
+    var data = "";
+
+    for (var i = 0; i < e.children.length; i++) {
+        var child = e.children[i];
+        data += (child.innerHTML);
+        data += i == (e.children.length - 1) ? "" : "\n";
+    }
+    frequenciesFile = FileHelpers.DownloadAsStringFile("Frequencies.txt", data);
 }
 //# sourceMappingURL=Encode.js.map

@@ -19,9 +19,7 @@
             <textarea id="Bits"></textarea>
 
             <label>
-                <input id="BitsFile" type="file">
-                <br>
-                <button class="fullWidth" onclick="UploadBits()">Upload</button>
+                <input id="BitsFile" type="file" onchange="UploadBits()">
             </label>
         </label>
     </div>
@@ -33,14 +31,12 @@
         <textarea id="Frequencies"></textarea>
 
         <label>
-            <input id="FrequenciesFile" type="file">
-            <br>
-            <button class="fullWidth" onclick="UploadFrequencies()">Upload</button>
+            <input id="FrequenciesFile" type="file" onchange="UploadFrequencies()">
         </label>
     </label>
     </div>
 
-    <button class="fullWidth topMargin bigLineHeight" onclick="Decode()">Decode</button>
+    <button class="fullWidth topMargin botMargin bigLineHeight" onclick="Decode()">Decode</button>
 
     <div class="panel">
         <div class="text">output text</div>
